@@ -198,13 +198,19 @@ add_action( 'customize_register', 'bones_theme_customizer' );
 // ) );
 
 
+// Add this function as a callback to the gform_register_init_scripts hook
 add_filter('gform_register_init_scripts', 'gform_display_weeks', 10, 2);
+// Overall, this function adds an initialization script to the Gravity Form which updates
+// the UI, per language, based on pregnancy length as specified by the user either in the
+// date selector or with a radio button for number of weeks.
 function gform_display_weeks($form) {
 
+// Store the following block of javascript in the $script variable
 $script = <<<EOT
 
   (function($){
 
+  // Identify relevant elements and define needed text per locale
 var vals = {
   en: {
     fields: {
@@ -403,6 +409,7 @@ var getAndText = function(days, weeks, translatedAnd) {
   return (weeks > 0 && days > 0) ? (" " + translatedAnd + " ") : "";
 }
 
+// Generate language-specific text to convert a number of days to "x weeks and y days" format
 var getEstimatedLMPText = function(totalDays, translatedWeek, translatedDay, translatedAnd) {
     var weeks = getWeeks(totalDays);
     var days = getDays(totalDays);
@@ -413,6 +420,8 @@ var getEstimatedLMPText = function(totalDays, translatedWeek, translatedDay, tra
     return weekText + andText + dayText;
 }
 
+// Add reminder text, in an element with id "tenWeekReminder" if it exists, otherwise after the
+// provided insertAfterSelector
 var setTenWeekReminder = function(reminderText, insertAfterSelector) {
   var divId = "tenWeekReminder";
   var replaceWithText = "<div id=\"" + divId + "\"><h5>" + reminderText + "</h5></div>";
@@ -431,18 +440,21 @@ var updateWeeksLabel = function(newText, labelSelector) {
   $(labelSelector).text(newText);
 };
 
+// Update the UI based on a total number of days pregnant
 var handleDateChange = function(language, totalDays) {
   var v = vals[language];
   var vt = v["text"];
   var vf = v["fields"];
 
   if(totalDays > 0) {
+    // Show pregnancy length in language-specific weeks and days
     var estimatedLMPText = getEstimatedLMPText(totalDays, vt["weeks"], vt["days"], vt["and"]);
     estimatedLMPText = vt["estimation1"] + estimatedLMPText + vt["estimation2"];
     updateWeeksLabel(estimatedLMPText, vf["lmpWeeksLabel"]);
 
     $(vf['weeksRadio']).show();
 
+    // If the pregnancy length is less than 8 weeks show the 10 week reminder
     if(getWeeks(totalDays) <= 8) {
       setTenWeekReminder(vt["tenWeekReminder"], vf["insertTenWeekReminderAfter"]);
       $(vf['nextButton']).show();
@@ -457,6 +469,8 @@ var handleDateChange = function(language, totalDays) {
 
     $(vf["nineWeekWarning"]).hide();
 
+    // Check the radio button corresponding to how long the pregnancy is. If the pregnancy is 
+    // 9 or more weeks long show an appropriate warning message.
     if(getWeeks(totalDays) <= 5) {
       $(vf["weeksRadio5"]).prop("checked", true);
 
@@ -481,9 +495,11 @@ var handleDateChange = function(language, totalDays) {
   }
 }
 
+// Set handlers on the elements for each language
 $.each(vals, function(language, v) {
   var vf = v['fields'];
 
+  // Call handleDateChange to update the UI when the dateSelect element is changed
   $(vf['dateSelect']).change(function () {
     var then = getSelectedDate(this);
     var totalDays = getTotalDaysFrom(then);
@@ -492,6 +508,8 @@ $.each(vals, function(language, v) {
 
   $(vf['weeksRadio']).hide();
 
+  // Add a handler to the nineWeekAccept element to show the next button only if 
+  // the user has checked nineWeekAcceptYes
   $(vf['nineWeekAccept']).change(function() {
     var nineWeekConfirm = $(vf['nineWeekAcceptYes']).prop("checked");
     if (nineWeekConfirm) {
@@ -502,6 +520,7 @@ $.each(vals, function(language, v) {
   });
 
 
+  // Call handleDateChange to update the UI when the user selects a weeks radio button
   $(vf['weeksRadio']).change(function () {
     var fiveClicked =  $(vf['weeksRadio5']).prop('checked');
     var sixClicked = $(vf['weeksRadio6']).prop('checked');
@@ -529,6 +548,7 @@ $.each(vals, function(language, v) {
 
 EOT;
 
+  // Add the script that we just defined as an initialization script for this Gravity Form
   GFFormDisplay::add_init_script($form['id'], 'gform_display_weeks', GFFormDisplay::ON_PAGE_RENDER, $script);
 
 }
