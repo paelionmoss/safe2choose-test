@@ -1,0 +1,19 @@
+/* There are a couple of things I would do to make the page look better. First, I personally
+ * don't like the cream color of the page's background and would prefer to change it to something
+ * darker. More importantly, on a regular computer screen there is too much blank space. I would
+ * move the "Contact Us" and "Find out more..." sections to take more advantage of horizontal space
+ * and so as not to have them dangling below by themselves. I think the spaces between sections are 
+ * unnecessary and just take up more room. I would also integrate the black bars at the top and
+ * bottom into the page itself.
+ */
+
+div.woocommerce__product-info a.btn--primary {
+  background-color: purple;
+}
+
+div.woocommerce__product-info a.btn--primary {
+  /* This value is defined in _variables.scss so we need to make sure that gets imported first
+   * for this to work.
+   */
+  background-color: $comp-color;
+}
