@@ -373,6 +373,33 @@ var vals = {
       estimation2: " का गर्भ है। कृपया नीचे पुष्टि करें।",
       tenWeekReminder: "ध्यान रहे! घर पर गर्भपात गोलियों का उपयोग गर्भावस्था के पहले 10 सप्ताह के भीतर सुरक्षित है।"
     }
+  },
+  ar: {
+    fields: {
+      insertTenWeekReminderAfter: "#gform_page_4_6 .gform_page_fields",
+      lmpWeeksLabel: "#field_4_59 > .gfield_label",
+      dateSelect: "#input_4_19",
+      weeksRadio: "#field_4_59",
+      tenWeekWarning: "#field_4_60",
+      weeksRadio5: "#choice_4_59_0",
+      weeksRadio6: "#choice_4_59_1",
+      weeksRadio7: "#choice_4_59_2",
+      weeksRadio8: "#choice_4_59_3",
+      weeksRadio9: "#choice_4_59_4",
+      weeksRadio10: "#choice_4_59_5",
+      nextButton: "#gform_next_button_4_21",
+      nineWeekWarning: "#field_4_55",
+      nineWeekAccept: "#input_4_55",
+      nineWeekAcceptYes: "#choice_4_55_1"
+    },
+    text: {
+      weeks: "أسابيع",
+      days: "أيام",
+      and: "و",
+      estimation1: "وبناء على ردكم، ونحن نفهم أن حملك ",
+      estimation2: ". يرجى تأكيد أدناه.",
+      tenWeekReminder: "تذكر! استخدام حبوب الإجهاض في المنزل أكثر أمانا داخل 10 أسبوعا الأولى من الحمل."
+    }
   }
 };
 
